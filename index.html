@@ -1,0 +1,85 @@
+<html>
+  <head>
+  	<title>艦これ　デッキビルダー形式ジェネレーター</title>
+    <meta name="description" content="ブラウザネットワークレスポンスからデッキビルダー形式を生成します">
+    <meta name="keywords" content="艦これ">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/default.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  	<script src="/common.js"></script>
+  	<script src="main.js"></script>
+	</head>
+	<body>
+		<div class="container">	
+			<h1>[艦これ]　デッキビルダー形式ジェネレーター</h1>
+
+			<p>専ブラなしにブラウザのネットワークレスポンスからデッキビルダー形式文字列を生成します</p>
+
+			<div id="deck" class="section">
+				<div class="row">	
+					<div class="input-field">
+				    <input type="text" v-model="slot_items" @input="validateInput('slot_items')" id="slot_items"
+				    :class="{ valid: inputErrors['slot_items'] === 'valid', invalid: inputErrors['slot_items'] === 'invalid' }"
+				    >
+						<label id="slot_items_label" for="slot_items">母港に帰投 slot_items または ゲーム開始時 require_info</label>
+						<span class="helper-text" data-error="入力が不正です" data-success="OK">*必須*(所持装備に変更なければ流用可）</span>
+					</div>
+				</div>
+
+	      <div class="row">
+					<div class="input-field">
+				    <input type="text" v-model="port" @input="validateInput('port')" id="port"
+				    :class="{ valid: inputErrors['port'] === 'valid', invalid: inputErrors['port'] === 'invalid' }"
+				    >
+						<label for="port">母港画面移動時 port </label>
+						<span class="helper-text" data-error="入力が不正です" data-success="OK">*必須*</span>
+					</div>
+				</div>
+
+	      <div class="row">
+					<div class="input-field">
+				    <input type="text" v-model="mapinfo" @input="validateInput('mapinfo')" id="mapinfo"
+				    :class="{ valid: inputErrors['mapinfo'] === 'valid', invalid: inputErrors['mapinfo'] === 'invalid' }"
+				    >
+						<label for="mapinfo">海域選択画面移動時 mapinfo</label>
+						<span class="helper-text" data-error="入力が不正です" data-success="OK">任意(基地必要なら入力)</span>
+					</div>
+				</div>
+
+	      <div class="row">
+					<label class="col s3">
+						<input class="with-gap" name="base_area" type="radio" value=0 v-model="base_area" @input="updateResult">	
+						<span>イベント海域</span>
+					</label>
+
+					<label class="col s3">
+						<input class="with-gap" name="base_area" type="radio" value=6 v-model="base_area" @input="updateResult">	
+						<span>第６海域</span>
+					</label>
+
+					<label class="col s3">	
+						<input class="with-gap" name="base_area" type="radio" value=7 v-model="base_area" @input="updateResult">	
+						<span>第７海域</span>
+					</label>	
+				</div>
+
+				<p v-show="message != ''">{{message}}</p>	
+
+	      <div class="row" v-show="result != ''">
+					<div class="input-field">
+						<input type="text" :value="result" readonly id="result">
+						<label id="result_label">デッキビルダー形式</label>
+						<button @click="copy" class="waves-effect btn">コピー</button> 
+						<button @click="open_airsim" class="waves-effect btn">制空シミュで開く</button>
+					</div>
+				</div>
+			</div>
+
+		  <hr>
+
+			<p>質問、要望、不具合等　なにかあれば <a href="https://twitter.com/mixberryparfait">@mixberryparfait</a> まで</p>
+		</div>
+	</body>
+</html>
