@@ -4,6 +4,10 @@ window.onload = () => {
 
 /////////////////////////////////////////
 
+const parseResponse = (res) => {
+  return JSON.parse(res.startsWith('svdata=') ? res.substring(7) : res);
+}
+
 const vm = new Vue ({
   el: '#deck',
 
@@ -39,7 +43,7 @@ const vm = new Vue ({
       }
       else {
         try {
-          JSON.parse(this[key]);
+          parseResponse(this[key]);
           this.inputErrors[key] = 'valid';
 
           if(key == 'slot_items' && localStorage) {
@@ -68,14 +72,14 @@ const vm = new Vue ({
 
       try {
 
-        let items = JSON.parse(this.slot_items).api_data;
+        let items = parseResponse(this.slot_items).api_data;
         if(items.api_slot_item) items = items.api_slot_item;
         items = Object.fromEntries(items.map(s => [s.api_id, s]));
 
-        const port = JSON.parse(this.port).api_data;
+        const port = parseResponse(this.port).api_data;
         const ships = Object.fromEntries(port.api_ship.map(s => [s.api_id,s]));
 
-        const base = this.mapinfo == '' ? [] : JSON.parse(this.mapinfo).api_data.api_air_base;
+        const base = this.mapinfo == '' ? [] : parseResponse(this.mapinfo).api_data.api_air_base;
 
         const item_json = (id) => {
           if(id == null || id <= 0) return null;
