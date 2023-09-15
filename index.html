@@ -17,6 +17,31 @@
 
 			<p>専ブラなしにブラウザのネットワークレスポンスからデッキビルダー形式文字列を生成します</p>
 
+			<details>
+				<summary>使い方</summary>
+				  <ol>
+				  	<li><p>chrome F12 でディベロッパーツールを開き > ネットワークタブに移動します</p></li>
+				  	<li><p>以下の３つの流れてくるサーバーレスポンスを<br>
+				  		右クリック > コピー > レスポンスをコピー<br>
+				  		で以下の入力欄に貼り付けてください
+				  		<ul>
+				  			<li><p>所持装備反映：装備母港帰投時 slot_item または ログイン時 require_info<br>
+				  			これは所持装備に変更がなければ前回の内容を流用できます (熟練度は更新されません)</li>
+				  	    <li><p>編成艦隊反映：母港移動時 port</p></li>
+				  	    <li><p>基地反映：マップ選択画面 mapinfo</p></li>
+				  	  </ul>
+				  	</p></li>
+				  </ol>
+
+				  <section>
+				  	<p>
+				  		<video class="responsive-video" controls>
+				  			<source src="kankore-deck.mp4" type="video/mp4">
+				  		</video>
+				  	</p>
+				  </section>
+			</details>
+
 			<div id="deck" class="section">
 				<div class="row">	
 					<div class="input-field">
@@ -44,7 +69,7 @@
 				    :class="{ valid: inputErrors['mapinfo'] === 'valid', invalid: inputErrors['mapinfo'] === 'invalid' }"
 				    >
 						<label for="mapinfo">海域選択画面移動時 mapinfo</label>
-						<span class="helper-text" data-error="入力が不正です" data-success="OK">任意(基地必要なら入力)</span>
+						<span class="helper-text" data-error="入力が不正です" :data-success="'OK' + (gaze_info == '' ? '' : ' ゲージ: ' + gaze_info)">任意(基地必要なら入力)</span>
 					</div>
 				</div>
 

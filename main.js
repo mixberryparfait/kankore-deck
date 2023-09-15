@@ -22,7 +22,8 @@ const vm = new Vue ({
       port: '',
       mapinfo: '',
     },
-    message: ''
+    message: '',
+    gaze_info: ''
   },
 
   created() {
@@ -40,20 +41,32 @@ const vm = new Vue ({
         this.inputErrors[key] = '';
         this.inputErrors['result'] = '';
         if(key != 'mapinfo') return;
+        else this.gaze_info = ''
       }
       else {
         try {
-          parseResponse(this[key]);
+          const res = parseResponse(this[key]);
           this.inputErrors[key] = 'valid';
 
           if(key == 'slot_items' && localStorage) {
             localStorage.setItem('slot_items', this.slot_items);
+          }
+          else if(key == 'mapinfo') {
+            try {
+              const tmp = res.api_data.api_map_info.slice(-1)[0].api_eventmap;
+              console.log(tmp)
+              this.gaze_info = tmp.api_now_maphp + ' / ' +  tmp.api_max_maphp;
+            } catch (e) {
+              consoler.log(e);
+              this.gaze_info = '';
+            }
           }
         } catch (e) {
           console.log(e);
           this.inputErrors[key] = e instanceof SyntaxError ? 'invalid' : '';
           this.inputErrors['result'] = '';
           this.result = '';
+          if(key == 'mapinfo') this.gaze_info = '';
           return;
         }
       }
